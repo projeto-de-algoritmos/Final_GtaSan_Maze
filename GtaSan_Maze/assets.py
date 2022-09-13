@@ -1,4 +1,6 @@
 from generator import *
+from weapons import *
+
 
 
 def is_collide(x, y,player_rect,walls_collide_list):
@@ -20,3 +22,11 @@ def cj_move(maze):
     direction = (0, 0)
 
     return player_speed,player_img, player_rect, directions, direction, keys
+
+def get_weapons(weapon_list,player_rect):
+    for glock in weapon_list:
+        if player_rect.collidepoint(glock.rect.center):
+            glock.set_pos()
+            return True
+    return False
+

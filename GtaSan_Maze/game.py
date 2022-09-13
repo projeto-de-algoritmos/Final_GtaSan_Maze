@@ -2,6 +2,7 @@ from generator import *
 from assets import *
 from weapons import *
 
+
 FPS = 60
 pygame.init()
 game_surface = pygame.Surface(RES)
@@ -17,10 +18,12 @@ maze = gamemap()
 # player settings
 player_speed,player_img, player_rect, directions, direction, keys = cj_move(maze)
 
-# Respawn glock no mapa
+# Respawn weapons no mapa
 Glock_list = [Glock(game_surface) for i in range(3)]
-
 Eletrical_list = [Eletrical(game_surface) for i in range(2)]
+Smg_list = [Smg(game_surface) for i in range(2)]
+Flower_list = [Flower(game_surface) for i in range(2)]
+Binoculo_list = [Binoculo(game_surface) for i in range(2)]
 
 walls_collide_list = sum([cell.get_rects() for cell in maze], [])
 
@@ -45,11 +48,38 @@ while True:
     
     # draw maze
     [cell.draw(game_surface) for cell in maze]
+
+    if get_weapons(Glock_list,player_rect):
+        FPS += 1
+
+    if get_weapons(Smg_list,player_rect):
+        FPS += 1  
+
+    if get_weapons(Flower_list,player_rect):
+        FPS += 1
+
+    if get_weapons(Binoculo_list,player_rect):
+        FPS += 1
+
+    if get_weapons(Eletrical_list,player_rect):
+        FPS += 1                 
+        
+
+
+    
+
+
     game_surface.blit(player_img, player_rect)
 
     [glocks.draw() for glocks in Glock_list]
 
     [eletrical.draw() for eletrical in Eletrical_list]
+
+    [smg.draw() for smg in Smg_list]
+
+    [flower.draw() for flower in Flower_list]
+
+    [binoculo.draw() for binoculo in Binoculo_list]
 
     pygame.display.flip()
     clock.tick(FPS)
