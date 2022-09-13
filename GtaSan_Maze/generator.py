@@ -31,6 +31,19 @@ class Cell:
             return False
         return self.grid_cells[find_index(x, y)]
 
+    def get_rects(self):
+        rects = []
+        x, y = self.x * TILE, self.y * TILE
+        if self.walls['top']:
+            rects.append(pygame.Rect( (x, y), (TILE, self.thickness) ))
+        if self.walls['right']:
+            rects.append(pygame.Rect( (x + TILE, y), (self.thickness, TILE) ))
+        if self.walls['bottom']:
+            rects.append(pygame.Rect( (x, y + TILE), (TILE , self.thickness) ))
+        if self.walls['left']:
+            rects.append(pygame.Rect( (x, y), (self.thickness, TILE) ))
+        return rects    
+
     def check_neighbors(self, grid_cells):
         self.grid_cells = grid_cells
         neighbors = []
