@@ -11,7 +11,7 @@ clock = pygame.time.Clock()
 
 game_background = pygame.image.load('images/gamebackground.jpg').convert()
 gta_background = pygame.image.load('images/logogta.jpg').convert()
-
+text_font = pygame.font.SysFont('Impact', 80)
 
 maze = gamemap()
 
@@ -27,6 +27,9 @@ Binoculo_list = [Binoculo(game_surface) for i in range(2)]
 
 walls_collide_list = sum([cell.get_rects() for cell in maze], [])
 
+pygame.time.set_timer(pygame.USEREVENT, 1000)
+time = 60
+
 
 while True:
     
@@ -37,6 +40,8 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
+        if event.type == pygame.USEREVENT:
+            time -= 1
 
     pressed_key = pygame.key.get_pressed()
     for key, key_value in keys.items():
@@ -51,24 +56,24 @@ while True:
 
     if get_weapons(Glock_list,player_rect):
         FPS += 1
+        time += 5
 
     if get_weapons(Smg_list,player_rect):
         FPS += 1  
+        time += 11
 
     if get_weapons(Flower_list,player_rect):
         FPS += 1
+        time += 7
 
     if get_weapons(Binoculo_list,player_rect):
         FPS += 1
+        time += 8
 
     if get_weapons(Eletrical_list,player_rect):
-        FPS += 1                 
+        FPS += 1 
+        time += 9                
         
-
-
-    
-
-
     game_surface.blit(player_img, player_rect)
 
     [glocks.draw() for glocks in Glock_list]
@@ -80,6 +85,9 @@ while True:
     [flower.draw() for flower in Flower_list]
 
     [binoculo.draw() for binoculo in Binoculo_list]
+
+    surface.blit(text_font.render('TIME', True, pygame.Color('grey'), True), (WIDTH + 150 , 400))
+    surface.blit(text_font.render(f'{time}', True, pygame.Color('grey')), (WIDTH + 350, 400))
 
     pygame.display.flip()
     clock.tick(FPS)
