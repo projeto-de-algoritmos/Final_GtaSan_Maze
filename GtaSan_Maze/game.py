@@ -1,5 +1,6 @@
 from generator import *
 from assets import *
+from weapons import *
 
 FPS = 60
 pygame.init()
@@ -15,6 +16,11 @@ maze = gamemap()
 
 # player settings
 player_speed,player_img, player_rect, directions, direction, keys = cj_move(maze)
+
+# Respawn glock no mapa
+Glock_list = [Glock(game_surface) for i in range(3)]
+
+Eletrical_list = [Eletrical(game_surface) for i in range(2)]
 
 walls_collide_list = sum([cell.get_rects() for cell in maze], [])
 
@@ -40,6 +46,10 @@ while True:
     # draw maze
     [cell.draw(game_surface) for cell in maze]
     game_surface.blit(player_img, player_rect)
+
+    [glocks.draw() for glocks in Glock_list]
+
+    [eletrical.draw() for eletrical in Eletrical_list]
 
     pygame.display.flip()
     clock.tick(FPS)
