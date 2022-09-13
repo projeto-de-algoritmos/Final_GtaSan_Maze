@@ -13,6 +13,8 @@ game_background = pygame.image.load('images/gamebackground.jpg').convert()
 gta_background = pygame.image.load('images/logogta.jpg').convert()
 text_font = pygame.font.SysFont('Impact', 80)
 weapons_font = pygame.font.SysFont('Impact', 30)
+knapasack_font = pygame.font.SysFont('Impact', 30)
+weighted_font  = pygame.font.SysFont('Impact', 15)
 
 maze = gamemap()
 
@@ -45,6 +47,9 @@ while True:
             exit()
         if event.type == pygame.USEREVENT:
             time -= 1
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_v:
+                exit()    
 
     pressed_key = pygame.key.get_pressed()
     for key, key_value in keys.items():
@@ -95,7 +100,9 @@ while True:
     [binoculo.draw() for binoculo in Binoculo_list]
 
     surface.blit(text_font.render('TIME', True, pygame.Color('grey'), True), (WIDTH + 150 , 370))
-    surface.blit(text_font.render(f'{time}', True, pygame.Color('grey')), (WIDTH + 350, 370))
+    surface.blit(text_font.render(f'{time}s', True, pygame.Color('grey')), (WIDTH + 350, 370))
+    surface.blit(knapasack_font.render(f'Peso Atual - {time}', True, pygame.Color('green')), (WIDTH + 210, 800))
+    surface.blit(knapasack_font.render(f'Capacidade Total Inventário - {time}', True, pygame.Color('green')), (WIDTH + 110, 850))
 
     surface.blit(glocks_img, glocks_rect)
     surface.blit(eletrical_img, eletrical_rect)
@@ -108,6 +115,12 @@ while True:
     surface.blit(weapons_font.render(f'-  {smg_qtde}x', True, pygame.Color('grey'), True), (WIDTH + 300, 600))
     surface.blit(weapons_font.render(f'-  {flower_qtde}x', True, pygame.Color('grey'), True), (WIDTH + 300, 650))
     surface.blit(weapons_font.render(f'-  {binoculo_qtde}x', True, pygame.Color('grey'), True), (WIDTH + 300, 700))
+
+    surface.blit(weighted_font.render(f'Peso 10kg', True, pygame.Color('blue'), True), (WIDTH + 160, 510))
+    surface.blit(weighted_font.render(f'Peso 8kg', True, pygame.Color('red'), True), (WIDTH + 160, 560))
+    surface.blit(weighted_font.render(f'Peso 5kg', True, pygame.Color('yellow'), True), (WIDTH + 160, 610))
+    surface.blit(weighted_font.render(f'Peso 3kg', True, pygame.Color('white'), True), (WIDTH + 160, 660))
+    surface.blit(weighted_font.render(f'Peso 2kg', True, pygame.Color('purple'), True), (WIDTH + 160, 710))
     
     
     pygame.display.flip()
