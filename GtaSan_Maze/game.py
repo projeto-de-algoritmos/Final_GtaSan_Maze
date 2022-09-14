@@ -1,6 +1,8 @@
 from generator import *
 from assets import *
 from weapons import *
+from random import randint
+from knapasackDP import *
 
 def is_game_over():
     global time, score, record, FPS
@@ -37,12 +39,30 @@ Smg_list = [Smg(game_surface) for i in range(2)]
 Flower_list = [Flower(game_surface) for i in range(2)]
 Binoculo_list = [Binoculo(game_surface) for i in range(2)]
 
+# val = [60, 100, 120]
+# wt = [10, 20, 30]
+# W = 50
+# n = len(val)
+# print(knapSack(W, wt, val, n))
+tam_glock = 3
+tam_eltrical = 2
+tam_smg = 2
+tam_flower = 2
+binoculo = 2
+val = [tam_glock,tam_eltrical,tam_smg,tam_flower,binoculo]
+wt =  [10, 8 ,5, 3, 1]
+n = len(val)
+print(val)
+
 walls_collide_list = sum([cell.get_rects() for cell in maze], [])
 
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 time = 60
 weightedKnapasack = 0
+wieghtedTotal = randint(40,100)
 
+x = knapSack(wieghtedTotal,wt,val,n)
+print(x)
 
 while True:
     
@@ -115,7 +135,7 @@ while True:
     surface.blit(text_font.render('TIME', True, pygame.Color('grey'), True), (WIDTH + 150 , 370))
     surface.blit(text_font.render(f'{time}s', True, pygame.Color('grey')), (WIDTH + 350, 370))
     surface.blit(knapasack_font.render(f'Peso Atual - {weightedKnapasack}', True, pygame.Color('green')), (WIDTH + 210, 800))
-    surface.blit(knapasack_font.render(f'Capacidade Total Inventário - {time}', True, pygame.Color('green')), (WIDTH + 110, 850))
+    surface.blit(knapasack_font.render(f'Capacidade Total Inventário - {wieghtedTotal}', True, pygame.Color('green')), (WIDTH + 110, 850))
 
     surface.blit(glocks_img, glocks_rect)
     surface.blit(eletrical_img, eletrical_rect)
