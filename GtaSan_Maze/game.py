@@ -4,15 +4,47 @@ from weapons import *
 from random import randint
 from knapasackDP import *
 
+def passTime():
+    global bestvalue,weightedKnapasack, record, recordTimeExecution
+    global time, FPS, record
+    global glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde
+    lastscore = set_score(bestvalue,weightedKnapasack)
+    set_record(record,lastscore)
+    pygame.time.wait(700)
+    glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde = 0, 0, 0, 0, 0
+    if recordTimeExecution > record:
+        recordTimeExecution = lastscore
+    player_rect.center = TILE // 2, TILE // 2
+    time, FPS = 60, 60
 
+def get_record():
+    try:
+        with open('record') as f:
+            return f.readline()
+    except FileNotFoundError:
+        with open('record', 'w') as f:
+            f.write('0')
+            return 0
 
+def set_record(record, score):
+    rec = max(float(record), score)
+    with open('record', 'w') as f:
+        f.write(str(rec))
 
 def is_game_over():
-    global time, score, record, FPS
+    global time, record, FPS
+    global glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde
+    global bestvalue,weightedKnapasack
+    global recordTimeExecution
     if time < 0:
+        x = set_score(bestvalue,weightedKnapasack)
+        set_record(record, x)
         pygame.time.wait(700)
         player_rect.center = TILE // 2, TILE // 2
-        time, score, FPS = 60, 0, 60
+        time, FPS = 60, 60
+        if recordTimeExecution > record:
+            recordTimeExecution = x
+        glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde = 0, 0, 0, 0, 0
 
 FPS = 60
 pygame.init()
@@ -26,6 +58,7 @@ text_font = pygame.font.SysFont('Impact', 80)
 weapons_font = pygame.font.SysFont('Impact', 30)
 knapasack_font = pygame.font.SysFont('Impact', 30)
 weighted_font  = pygame.font.SysFont('Impact', 15)
+score_font = pygame.font.SysFont('Impact', 30)
 
 maze = gamemap()
 
@@ -60,10 +93,12 @@ print(val)
 walls_collide_list = sum([cell.get_rects() for cell in maze], [])
 
 pygame.time.set_timer(pygame.USEREVENT, 1000)
-time = 60
+time = 10
 weightedKnapasack = 0
 wieghtedTotal = randint(40,100)
 print(wieghtedTotal)
+record = get_record()
+recordTimeExecution = record
 
 
 bestvalue = knapSack(wieghtedTotal,wt,val,n)
@@ -82,7 +117,7 @@ while True:
             time -= 1
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_v:
-                exit()    
+                passTime()    
 
     pressed_key = pygame.key.get_pressed()
     for key, key_value in keys.items():
@@ -97,22 +132,22 @@ while True:
 
     if get_weapons(Glock_list,player_rect):
         FPS += 1
-        time += 5
+        time += 4
         glock_qtde += 1
 
     if get_weapons(Smg_list,player_rect):
         FPS += 1  
-        time += 11
+        time += 2
         smg_qtde += 1
 
     if get_weapons(Flower_list,player_rect):
         FPS += 1
-        time += 7
+        time += 3
         flower_qtde += 1
 
     if get_weapons(Binoculo_list,player_rect):
         FPS += 1
-        time += 8
+        time += 1
         binoculo_qtde += 1
 
     if get_weapons(Eletrical_list,player_rect):
@@ -137,8 +172,8 @@ while True:
 
     [binoculo.draw() for binoculo in Binoculo_list]
 
-    surface.blit(text_font.render('TIME', True, pygame.Color('grey'), True), (WIDTH + 150 , 370))
-    surface.blit(text_font.render(f'{time}s', True, pygame.Color('grey')), (WIDTH + 350, 370))
+    surface.blit(text_font.render('TIME', True, pygame.Color('grey'), True), (WIDTH + 150 , 380))
+    surface.blit(text_font.render(f'{time}s', True, pygame.Color('grey')), (WIDTH + 350, 380))
     surface.blit(knapasack_font.render(f'Peso Atual - {weightedKnapasack}', True, pygame.Color('green')), (WIDTH + 210, 800))
     surface.blit(knapasack_font.render(f'Capacidade Total Inventário - {wieghtedTotal}', True, pygame.Color('green')), (WIDTH + 110, 850))
 
@@ -159,6 +194,10 @@ while True:
     surface.blit(weighted_font.render(f'Peso 5kg', True, pygame.Color('yellow'), True), (WIDTH + 160, 610))
     surface.blit(weighted_font.render(f'Peso 3kg', True, pygame.Color('white'), True), (WIDTH + 160, 660))
     surface.blit(weighted_font.render(f'Peso 2kg', True, pygame.Color('purple'), True), (WIDTH + 160, 710))
+
+    #record
+    surface.blit(score_font.render(f'record  :  {recordTimeExecution} pontos', True, pygame.Color('magenta'), True), (WIDTH + 160, 340))
+    # surface.blit(text_font.render(f'{record}', True, pygame.Color('magenta')), (WIDTH + 70, 700))
     
     
     pygame.display.flip()
