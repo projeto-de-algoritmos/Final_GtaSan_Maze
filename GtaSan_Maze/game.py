@@ -15,6 +15,11 @@ def passTime():
     if recordTimeExecution > record:
         recordTimeExecution = lastscore
     player_rect.center = TILE // 2, TILE // 2
+    [glocks.set_pos() for glocks in Glock_list]
+    [eletrical.set_pos() for eletrical in Eletrical_list]
+    [smg.set_pos() for smg in Smg_list]
+    [flower.set_pos() for flower in Flower_list]
+    [binoculo.set_pos() for binoculo in Binoculo_list]
     time, FPS = 60, 60
 
 def get_record():
@@ -41,6 +46,11 @@ def is_game_over():
         set_record(record, x)
         pygame.time.wait(700)
         player_rect.center = TILE // 2, TILE // 2
+        [glocks.set_pos() for glocks in Glock_list]
+        [eletrical.set_pos() for eletrical in Eletrical_list]
+        [smg.set_pos() for smg in Smg_list]
+        [flower.set_pos() for flower in Flower_list]
+        [binoculo.set_pos() for binoculo in Binoculo_list]
         time, FPS = 60, 60
         if recordTimeExecution > record:
             recordTimeExecution = x
@@ -69,26 +79,27 @@ glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde = 0, 0, 0, 0, 
  
 
 # Respawn weapons no mapa
-Glock_list = [Glock(game_surface) for i in range(3)]
-Eletrical_list = [Eletrical(game_surface) for i in range(2)]
-Smg_list = [Smg(game_surface) for i in range(2)]
-Flower_list = [Flower(game_surface) for i in range(2)]
-Binoculo_list = [Binoculo(game_surface) for i in range(2)]
+Glock_list = [Glock(game_surface) for i in range(randint(3,6))]
+Eletrical_list = [Eletrical(game_surface) for i in range(randint(3,6))]
+Smg_list = [Smg(game_surface) for i in range(randint(3,6))]
+Flower_list = [Flower(game_surface) for i in range(randint(3,6))]
+Binoculo_list = [Binoculo(game_surface) for i in range(randint(3,6))]
 
 # val = [60, 100, 120]
 # wt = [10, 20, 30]
 # W = 50
 # n = len(val)
 # print(knapSack(W, wt, val, n))
-tam_glock = 3
-tam_eltrical = 2
-tam_smg = 2
-tam_flower = 2
-binoculo = 2
+tam_glock = len(Glock_list)
+tam_eltrical = len(Eletrical_list)
+tam_smg =  len(Smg_list)
+tam_flower = len(Flower_list)
+binoculo = len(Binoculo_list)
+
 val = [tam_glock,tam_eltrical,tam_smg,tam_flower,binoculo]
 wt =  [10, 8 ,5, 3, 1]
 n = len(val)
-print(val)
+# print(val)
 
 walls_collide_list = sum([cell.get_rects() for cell in maze], [])
 
@@ -196,7 +207,7 @@ while True:
     surface.blit(weighted_font.render(f'Peso 2kg', True, pygame.Color('purple'), True), (WIDTH + 160, 710))
 
     #record
-    surface.blit(score_font.render(f'record  :  {recordTimeExecution} pontos', True, pygame.Color('magenta'), True), (WIDTH + 160, 340))
+    surface.blit(score_font.render(f'RECORD  :  {recordTimeExecution} pontos', True, pygame.Color('magenta'), True), (WIDTH + 160, 340))
     # surface.blit(text_font.render(f'{record}', True, pygame.Color('magenta')), (WIDTH + 70, 700))
     
     
