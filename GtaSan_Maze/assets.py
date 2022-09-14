@@ -1,6 +1,9 @@
 from generator import *
 from weapons import *
 
+def set_posi(glock):
+    glock.rect.topleft = WIDTH + 1100, 1000
+
 def is_collide(x, y,player_rect,walls_collide_list):
     tmp_rect = player_rect.move(x, y)
     if tmp_rect.collidelist(walls_collide_list) == -1:
@@ -24,7 +27,7 @@ def cj_move(maze):
 def get_weapons(weapon_list,player_rect):
     for glock in weapon_list:
         if player_rect.collidepoint(glock.rect.center):
-            glock.set_pos()
+            set_posi(glock)
             return True
     return False
 
@@ -57,3 +60,6 @@ def drawWeapons(maze):
 
     return glocks_img, glocks_rect, eletrical_img, eletrical_rect, smg_img, smg_rect, flower_img, flower_rect, binoculo_img,binoculo_rect 
 
+def pesoMochila(glock_qtde ,eletrical_qtde ,  smg_qtde ,  flower_qtde , binoculo_qtde):
+    return (glock_qtde * 10) + (eletrical_qtde * 8) + (  smg_qtde * 5 ) + (flower_qtde * 3) + (binoculo_qtde * 1)
+    

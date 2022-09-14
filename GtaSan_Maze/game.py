@@ -2,6 +2,12 @@ from generator import *
 from assets import *
 from weapons import *
 
+def is_game_over():
+    global time, score, record, FPS
+    if time < 0:
+        pygame.time.wait(700)
+        player_rect.center = TILE // 2, TILE // 2
+        time, score, FPS = 60, 0, 60
 
 FPS = 60
 pygame.init()
@@ -22,6 +28,7 @@ maze = gamemap()
 player_speed,player_img, player_rect, directions, direction, keys = cj_move(maze)
 glocks_img, glocks_rect, eletrical_img, eletrical_rect, smg_img, smg_rect, flower_img, flower_rect, binoculo_img,binoculo_rect = drawWeapons(maze)
 glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde = 0, 0, 0, 0, 0
+ 
 
 # Respawn weapons no mapa
 Glock_list = [Glock(game_surface) for i in range(3)]
@@ -34,6 +41,7 @@ walls_collide_list = sum([cell.get_rects() for cell in maze], [])
 
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 time = 60
+weightedKnapasack = 0
 
 
 while True:
@@ -85,7 +93,12 @@ while True:
     if get_weapons(Eletrical_list,player_rect):
         FPS += 1 
         time += 9  
-        eletrical_qtde += 1          
+        eletrical_qtde += 1
+
+    weightedKnapasack = pesoMochila(glock_qtde ,eletrical_qtde ,  smg_qtde ,  flower_qtde , binoculo_qtde)
+           
+
+    is_game_over()     
         
     game_surface.blit(player_img, player_rect)
 
@@ -101,7 +114,7 @@ while True:
 
     surface.blit(text_font.render('TIME', True, pygame.Color('grey'), True), (WIDTH + 150 , 370))
     surface.blit(text_font.render(f'{time}s', True, pygame.Color('grey')), (WIDTH + 350, 370))
-    surface.blit(knapasack_font.render(f'Peso Atual - {time}', True, pygame.Color('green')), (WIDTH + 210, 800))
+    surface.blit(knapasack_font.render(f'Peso Atual - {weightedKnapasack}', True, pygame.Color('green')), (WIDTH + 210, 800))
     surface.blit(knapasack_font.render(f'Capacidade Total Inventário - {time}', True, pygame.Color('green')), (WIDTH + 110, 850))
 
     surface.blit(glocks_img, glocks_rect)
