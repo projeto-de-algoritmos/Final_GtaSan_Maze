@@ -4,6 +4,9 @@ from weapons import *
 from random import randint
 from knapasackDP import *
 
+
+
+
 def is_game_over():
     global time, score, record, FPS
     if time < 0:
@@ -60,9 +63,11 @@ pygame.time.set_timer(pygame.USEREVENT, 1000)
 time = 60
 weightedKnapasack = 0
 wieghtedTotal = randint(40,100)
+print(wieghtedTotal)
 
-x = knapSack(wieghtedTotal,wt,val,n)
-print(x)
+
+bestvalue = knapSack(wieghtedTotal,wt,val,n)
+print(bestvalue)
 
 while True:
     

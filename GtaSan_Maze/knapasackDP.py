@@ -14,4 +14,9 @@ def knapSack(W, wt, val, n):
  
     return K[n][W]
  
+wt = [1, 3, 4,2,5,6,7]
+val = [1,15,25,16,9,3,7]
+W = 23
+n = len(val)
+print(knapSack(W, wt, val, n))
  

@@ -1,5 +1,7 @@
+from cmath import isclose
 from generator import *
 from weapons import *
+import math
 
 def set_posi(glock):
     glock.rect.topleft = WIDTH + 1100, 1000
@@ -62,4 +64,15 @@ def drawWeapons(maze):
 
 def pesoMochila(glock_qtde ,eletrical_qtde ,  smg_qtde ,  flower_qtde , binoculo_qtde):
     return (glock_qtde * 10) + (eletrical_qtde * 8) + (  smg_qtde * 5 ) + (flower_qtde * 3) + (binoculo_qtde * 1)
+
+def score(bestvalue,weightedKnapasack):
     
+    if bestvalue == weightedKnapasack:
+        return 1000
+    
+    if math.isclose(bestvalue, weightedKnapasack):
+        return 888
+
+    score = abs(bestvalue - weightedKnapasack)
+    return 1000/score 
+
