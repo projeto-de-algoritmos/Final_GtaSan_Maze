@@ -22,6 +22,24 @@ def passTime():
     [binoculo.set_pos() for binoculo in Binoculo_list]
     time, FPS = 60, 60
 
+
+def removeItemKnapsack():
+    global flag
+    global glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde
+    if(flag == 1):
+        glock_qtde -= 1
+    elif(flag == 2):
+        smg_qtde -= 1
+    elif(flag == 3):
+        eletrical_qtde -= 1
+    elif(flag == 4):
+        flower_qtde -= 1
+    elif(flag == 5):
+        binoculo_qtde -= 1
+    else:
+        flag = flag              
+
+
 def get_record():
     try:
         with open('record') as f:
@@ -107,13 +125,13 @@ pygame.time.set_timer(pygame.USEREVENT, 1000)
 time = 10
 weightedKnapasack = 0
 wieghtedTotal = randint(40,100)
-print(wieghtedTotal)
+# print(wieghtedTotal)
 record = get_record()
 recordTimeExecution = record
 
-
+flag = 0
 bestvalue = knapSack(wieghtedTotal,wt,val,n)
-print(bestvalue)
+# print(bestvalue)
 
 while True:
     
@@ -128,7 +146,10 @@ while True:
             time -= 1
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_v:
-                passTime()    
+                passTime()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_x:
+                removeItemKnapsack()           
 
     pressed_key = pygame.key.get_pressed()
     for key, key_value in keys.items():
@@ -140,6 +161,17 @@ while True:
     
     # draw maze
     [cell.draw(game_surface) for cell in maze]
+
+    if lastColide(Glock_list,player_rect):
+        flag = 1
+    if lastColide(Smg_list,player_rect):
+        flag = 2
+    if lastColide(Eletrical_list,player_rect):
+        flag = 3  
+    if lastColide(Flower_list,player_rect):
+        flag = 4 
+    if lastColide(Binoculo_list,player_rect):
+        flag = 5          
 
     if get_weapons(Glock_list,player_rect):
         FPS += 1

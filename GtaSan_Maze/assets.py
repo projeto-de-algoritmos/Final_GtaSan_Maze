@@ -27,10 +27,27 @@ def cj_move(maze):
 
 # Coletar item para a mochila
 def get_weapons(weapon_list,player_rect):
+    
     for glock in weapon_list:
         if player_rect.collidepoint(glock.rect.center):
             set_posi(glock)
             return True
+    return False
+
+def lastColide(weapon_list,player_rect):
+    for glock in weapon_list:
+        if player_rect.collidepoint(glock.rect.center):
+            x = glock.whoami()
+            if x == 'Glock':
+                return True
+            if x == 'Smg':
+                return True
+            if x == 'Flower':
+                return True
+            if x == 'Binoculo':
+                return True
+            if x == 'Eletrical':
+                return True                
     return False
 
 # Desenhar weapons no menu

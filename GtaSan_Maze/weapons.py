@@ -15,6 +15,9 @@ class Glock(object):
     def draw(self):
         self.game_surface.blit(self.img, self.rect)
 
+    def whoami(self):
+        return (type(self).__name__)     
+
 class Eletrical(object):
     def __init__(self,game_surface):
         self.img = pygame.image.load('images/eletrical.jpg').convert_alpha()
@@ -28,6 +31,9 @@ class Eletrical(object):
 
     def draw(self):
         self.game_surface.blit(self.img, self.rect)
+    
+    def whoami(self):
+        return (type(self).__name__)    
 
 class Smg(object):
     def __init__(self,game_surface):
@@ -43,6 +49,9 @@ class Smg(object):
     def draw(self):
         self.game_surface.blit(self.img, self.rect)
 
+    def whoami(self):
+        return (type(self).__name__)    
+
 class Flower(object):
     def __init__(self,game_surface):
         self.img = pygame.image.load('images/flower.jpg').convert_alpha()
@@ -57,6 +66,9 @@ class Flower(object):
     def draw(self):
         self.game_surface.blit(self.img, self.rect)
 
+    def whoami(self):
+        return (type(self).__name__)    
+
 class Binoculo(object):
     def __init__(self,game_surface):
         self.img = pygame.image.load('images/binoculo.jpg').convert_alpha()
@@ -70,3 +82,6 @@ class Binoculo(object):
 
     def draw(self):
         self.game_surface.blit(self.img, self.rect)
+
+    def whoami(self):
+        return type(self).__name__    
