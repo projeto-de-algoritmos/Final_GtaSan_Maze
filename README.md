@@ -71,4 +71,8 @@ $ python3 game.py
 7. Seu objetivo é conseguir a maior pontuação possível. 1000 pontos.
 
 
+## Apresentação
 
+A apresentação se encontra na pasta apresentacao, e pode ser acessado por esse link:
+
+[Video Apresentação](apresentacao/video_Final.mp4)
