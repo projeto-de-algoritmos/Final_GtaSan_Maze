@@ -5,12 +5,18 @@ from random import randint
 from knapasackDP import *
 
 def passTime():
+
     global bestvalue,weightedKnapasack, record, recordTimeExecution,wieghtedTotal
-    global time, FPS, record
+    global time, FPS, record,n
     global glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde
-    global penalidades
-    lastscore = set_score(bestvalue,weightedKnapasack,penalidades)
+    global penalidades, val, wt
+    global cjvalue, last_score
+    
+    cjvalue = knapSack(wieghtedTotal,wt,val,weightedKnapasack)
+    lastscore = set_score(bestvalue,cjvalue,penalidades)
+    last_score = lastscore
     set_record(record,lastscore)
+    
     pygame.time.wait(700)
     glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde = 0, 0, 0, 0, 0
     if float(lastscore) > float(recordTimeExecution):
@@ -33,18 +39,28 @@ def removeItemKnapsack():
     if(flag == 1):
         glock_qtde -= 1
         penalidades += 1
+        val.pop()
+        wt.pop()
     elif(flag == 2):
         smg_qtde -= 1
         penalidades += 1
+        val.pop()
+        wt.pop()
     elif(flag == 3):
         eletrical_qtde -= 1
         penalidades += 1
+        val.pop()
+        wt.pop()
     elif(flag == 4):
         flower_qtde -= 1
         penalidades += 1
+        val.pop()
+        wt.pop()
     elif(flag == 5):
         binoculo_qtde -= 1
         penalidades += 1
+        val.pop()
+        wt.pop()
     else:
         flag = flag              
 
@@ -68,10 +84,14 @@ def is_game_over():
     global glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde
     global bestvalue,weightedKnapasack
     global recordTimeExecution, wieghtedTotal
-    global penalidades
+    global penalidades, last_score
+    global cjvalue,val, wt
+    
+    cjvalue = knapSack(wieghtedTotal,wt,val,weightedKnapasack)
 
     if time < 0:
-        x = set_score(bestvalue,weightedKnapasack,penalidades)
+        x = set_score(bestvalue,cjvalue,penalidades)
+        last_score = x
         set_record(record, x)
         pygame.time.wait(700)
         player_rect.center = TILE // 2, TILE // 2
@@ -99,6 +119,7 @@ text_font = pygame.font.SysFont('Impact', 80)
 weapons_font = pygame.font.SysFont('Impact', 30)
 knapasack_font = pygame.font.SysFont('Impact', 30)
 weighted_font  = pygame.font.SysFont('Impact', 15)
+lastscore_font = pygame.font.SysFont('Impact', 20)
 score_font = pygame.font.SysFont('Impact', 30)
 
 maze = gamemap()
@@ -110,41 +131,66 @@ glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde = 0, 0, 0, 0, 
  
 
 # Respawn weapons no mapa
-Glock_list = [Glock(game_surface) for i in range(randint(3,6))]
-Eletrical_list = [Eletrical(game_surface) for i in range(randint(3,6))]
-Smg_list = [Smg(game_surface) for i in range(randint(3,6))]
-Flower_list = [Flower(game_surface) for i in range(randint(3,6))]
-Binoculo_list = [Binoculo(game_surface) for i in range(randint(3,6))]
+Glock_list = [Glock(game_surface) for i in range(randint(4,6))]
+Eletrical_list = [Eletrical(game_surface) for i in range(randint(4,6))]
+Smg_list = [Smg(game_surface) for i in range(randint(4,6))]
+Flower_list = [Flower(game_surface) for i in range(randint(4,6))]
+Binoculo_list = [Binoculo(game_surface) for i in range(randint(4,6))]
 
-# val = [60, 100, 120]
-# wt = [10, 20, 30]
-# W = 50
-# n = len(val)
-# print(knapSack(W, wt, val, n))
+
 tam_glock = len(Glock_list)
 tam_eltrical = len(Eletrical_list)
 tam_smg =  len(Smg_list)
 tam_flower = len(Flower_list)
-binoculo = len(Binoculo_list)
+tam_binoculo = len(Binoculo_list)
 
-val = [tam_glock,tam_eltrical,tam_smg,tam_flower,binoculo]
-wt =  [10, 8 ,5, 3, 1]
-n = len(val)
-# print(val)
+
+val = []
+wt = []
+
+valbest = []
+wtbest = []
+
+for i in range(tam_glock):
+    valbest.append(23)
+    wtbest.append(10)
+
+for i in range(tam_eltrical):
+    valbest.append(14)
+    wtbest.append(8)
+
+for i in range(tam_smg):
+    valbest.append(19)
+    wtbest.append(5)
+
+for i in range(tam_flower):
+    valbest.append(2)
+    wtbest.append(3)
+
+for i in range(tam_binoculo):
+    valbest.append(2)
+    wtbest.append(2)    
+
+
+nbest = (tam_glock + tam_eltrical + tam_smg + tam_flower + tam_binoculo) 
+
+
 
 walls_collide_list = sum([cell.get_rects() for cell in maze], [])
 
 pygame.time.set_timer(pygame.USEREVENT, 1000)
-time = 10
+time = 60
 weightedKnapasack = 0
 wieghtedTotal = randint(40,100)
-# print(wieghtedTotal)
+
 record = get_record()
 recordTimeExecution = record
+last_score = record
 
 flag = 0
-bestvalue = knapSack(wieghtedTotal,wt,val,n)
-# print(bestvalue)
+bestvalue = knapSack(wieghtedTotal,wtbest,valbest,nbest)
+
+cjvalue = None
 
 while True:
     
@@ -189,27 +235,37 @@ while True:
     if get_weapons(Glock_list,player_rect):
         time += 4
         glock_qtde += 1
+        val.append(23)
+        wt.append(10)
 
     if get_weapons(Smg_list,player_rect):
         FPS += 1  
         time += 2
         smg_qtde += 1
+        val.append(19)
+        wt.append(5)
 
     if get_weapons(Flower_list,player_rect):
         time += 3
         flower_qtde += 1
+        val.append(5)
+        wt.append(3)
 
     if get_weapons(Binoculo_list,player_rect):
         FPS += 1
         time += 1
         binoculo_qtde += 1
+        val.append(2)
+        wt.append(2)
 
     if get_weapons(Eletrical_list,player_rect):
         FPS += 1 
         time += 9  
         eletrical_qtde += 1
+        val.append(14)
+        wt.append(8)
 
-    weightedKnapasack = pesoMochila(glock_qtde ,eletrical_qtde ,  smg_qtde ,  flower_qtde , binoculo_qtde)
+    weightedKnapasack = pesoMochila(glock_qtde ,eletrical_qtde,smg_qtde,flower_qtde,binoculo_qtde)
            
 
     is_game_over()     
@@ -249,10 +305,15 @@ while True:
     surface.blit(weighted_font.render(f'Peso 3kg', True, pygame.Color('white'), True), (WIDTH + 160, 660))
     surface.blit(weighted_font.render(f'Peso 2kg', True, pygame.Color('purple'), True), (WIDTH + 160, 710))
 
+    surface.blit(weighted_font.render(f'23$', True, pygame.Color('blue'), True), (WIDTH + 370, 510))
+    surface.blit(weighted_font.render(f'14$', True, pygame.Color('red'), True), (WIDTH + 370, 560))
+    surface.blit(weighted_font.render(f'19$', True, pygame.Color('yellow'), True), (WIDTH + 370, 610))
+    surface.blit(weighted_font.render(f'5$', True, pygame.Color('white'), True), (WIDTH + 370, 660))
+    surface.blit(weighted_font.render(f'2$', True, pygame.Color('purple'), True), (WIDTH + 370, 710))
+
     #record
     surface.blit(score_font.render(f'RECORD  :  {recordTimeExecution} pontos', True, pygame.Color('magenta'), True), (WIDTH + 160, 340))
-    # surface.blit(text_font.render(f'{record}', True, pygame.Color('magenta')), (WIDTH + 70, 700))
-    
+    surface.blit(lastscore_font.render(f'Pontuação Anterior  :  {last_score} pontos', True, pygame.Color('Orange'), True), (WIDTH + 160, 760))
     
     pygame.display.flip()
     clock.tick(FPS)

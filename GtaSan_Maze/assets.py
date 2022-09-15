@@ -80,16 +80,16 @@ def drawWeapons(maze):
     return glocks_img, glocks_rect, eletrical_img, eletrical_rect, smg_img, smg_rect, flower_img, flower_rect, binoculo_img,binoculo_rect 
 
 def pesoMochila(glock_qtde ,eletrical_qtde ,  smg_qtde ,  flower_qtde , binoculo_qtde):
-    return (glock_qtde * 10) + (eletrical_qtde * 8) + (  smg_qtde * 5 ) + (flower_qtde * 3) + (binoculo_qtde * 1)
+    return (glock_qtde) + (eletrical_qtde) + (smg_qtde) + (flower_qtde) + (binoculo_qtde)
 
-def set_score(bestvalue,weightedKnapasack,penalidades):
+def set_score(bestvalue,cjvalue,penalidades):
     
-    if bestvalue == weightedKnapasack:
+    if bestvalue == cjvalue:
         return 1000.0
     
-    if math.isclose(bestvalue, weightedKnapasack):
+    if math.isclose(bestvalue, cjvalue):
         return 888.0
 
-    score = abs(bestvalue - weightedKnapasack)
-    return round((1000/score)-(penalidades*10),2)
-
+    score = abs(bestvalue - cjvalue)
+    return round((1000/score),2)
+    
