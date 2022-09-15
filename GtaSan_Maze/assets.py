@@ -91,5 +91,5 @@ def set_score(bestvalue,weightedKnapasack,penalidades):
         return 888.0
 
     score = abs(bestvalue - weightedKnapasack)
-    return round((1000/score)/penalidades,2)
+    return round((1000/score)-(penalidades*10),2)
 
