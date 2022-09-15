@@ -43,7 +43,7 @@ ou
 $ pip3 install pygame
 ```
 
-### Para rodar a aplicação certifique de estar dentro da pasta Mapfinder:
+### Para rodar a aplicação certifique de estar dentro da pasta GtaSan_Maze:
 
 Para entrar dentro da pasta GtaSan_Maze
 
