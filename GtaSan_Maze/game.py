@@ -5,14 +5,15 @@ from random import randint
 from knapasackDP import *
 
 def passTime():
-    global bestvalue,weightedKnapasack, record, recordTimeExecution
+    global bestvalue,weightedKnapasack, record, recordTimeExecution,wieghtedTotal
     global time, FPS, record
     global glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde
-    lastscore = set_score(bestvalue,weightedKnapasack)
+    global penalidades
+    lastscore = set_score(bestvalue,weightedKnapasack,penalidades)
     set_record(record,lastscore)
     pygame.time.wait(700)
     glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde = 0, 0, 0, 0, 0
-    if recordTimeExecution > record:
+    if float(lastscore) > float(recordTimeExecution):
         recordTimeExecution = lastscore
     player_rect.center = TILE // 2, TILE // 2
     [glocks.set_pos() for glocks in Glock_list]
@@ -21,21 +22,29 @@ def passTime():
     [flower.set_pos() for flower in Flower_list]
     [binoculo.set_pos() for binoculo in Binoculo_list]
     time, FPS = 60, 60
+    wieghtedTotal = randint(40,100)
 
 
 def removeItemKnapsack():
     global flag
     global glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde
+    global penalidades
+
     if(flag == 1):
         glock_qtde -= 1
+        penalidades += 1
     elif(flag == 2):
         smg_qtde -= 1
+        penalidades += 1
     elif(flag == 3):
         eletrical_qtde -= 1
+        penalidades += 1
     elif(flag == 4):
         flower_qtde -= 1
+        penalidades += 1
     elif(flag == 5):
         binoculo_qtde -= 1
+        penalidades += 1
     else:
         flag = flag              
 
@@ -58,9 +67,11 @@ def is_game_over():
     global time, record, FPS
     global glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde
     global bestvalue,weightedKnapasack
-    global recordTimeExecution
+    global recordTimeExecution, wieghtedTotal
+    global penalidades
+
     if time < 0:
-        x = set_score(bestvalue,weightedKnapasack)
+        x = set_score(bestvalue,weightedKnapasack,penalidades)
         set_record(record, x)
         pygame.time.wait(700)
         player_rect.center = TILE // 2, TILE // 2
@@ -70,10 +81,12 @@ def is_game_over():
         [flower.set_pos() for flower in Flower_list]
         [binoculo.set_pos() for binoculo in Binoculo_list]
         time, FPS = 60, 60
-        if recordTimeExecution > record:
+        wieghtedTotal = randint(40,100)
+        if float(x) > float(recordTimeExecution):
             recordTimeExecution = x
         glock_qtde , eletrical_qtde, smg_qtde, flower_qtde, binoculo_qtde = 0, 0, 0, 0, 0
 
+penalidades = 0
 FPS = 60
 pygame.init()
 game_surface = pygame.Surface(RES)
@@ -174,7 +187,6 @@ while True:
         flag = 5          
 
     if get_weapons(Glock_list,player_rect):
-        FPS += 1
         time += 4
         glock_qtde += 1
 
@@ -184,7 +196,6 @@ while True:
         smg_qtde += 1
 
     if get_weapons(Flower_list,player_rect):
-        FPS += 1
         time += 3
         flower_qtde += 1
 
